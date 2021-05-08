@@ -17,20 +17,25 @@ if (process.env.NODE_ENV === 'production') {
 
 // full type we can found here: TelegramBot.MessageType
 bot.on('text', (msg) => {
-  console.log('_________________________________________________________________');
-  console.log();
-  console.log(new Date(), 'got new message!');
-  console.log('user:', msg.chat);
-  console.log('text:', msg.text);
-  console.log();
+  let logMessage = `
+  prod: ${process.env.NODE_ENV === 'production'}
+  id: ${msg.chat.id}
+  first_name: ${msg.chat.first_name}
+  last_name: ${msg.chat.last_name}
+  username: ${msg.chat.username}
+  message: ${msg.text}
+  `
 
   const chatId = msg.chat.id;
   const text = msg.text || '';
   const urls = text.match(/\bhttps?:\/\/\S+/gi) || [''];
   const number = urls[0].match(/\d+(\.\d+)?/g);
   if(number) {
-    bot.sendMessage(chatId, `https://www.themarker.com/misc/themarkersmartphoneapp/${number}`);
+    const response = `https://www.themarker.com/misc/themarkersmartphoneapp/${number}`;
+    logMessage += `response: ${response}`;
+    bot.sendMessage(chatId, response);
   }
+  sendLog(logMessage)
 });
 
 const app = express();
@@ -43,3 +48,7 @@ app.post('/' + bot.token, (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
 });
+
+function sendLog(text) {
+  bot.sendMessage(process.env.CHAT_LOG_ID, text);
+}
