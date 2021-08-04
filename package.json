@@ -4,7 +4,8 @@
   "description": "",
   "main": "bot.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest",
+    "test:dev": "jest --watch",
     "start": "node bot.js",
     "herokuLogin": "heroku login",
     "herokuDeploy": "heroku git:remote -a kilzi-bot && git add . && git commit -am \"Deployed to Heroku!!\" && git push heroku master"
