@@ -1,7 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 const express = require('express')
 const bodyParser = require('body-parser');
-
+const messageHandler = require('./messageHandler');
 require('dotenv').config();
  
 const token = process.env.TELEGRAM_TOKEN;
@@ -16,25 +16,12 @@ if (process.env.NODE_ENV === 'production') {
 
 // full type we can found here: TelegramBot.MessageType
 bot.on('text', (msg) => {
-  let logMessage = `
-  prod: ${process.env.NODE_ENV === 'production'}
-  id: ${msg.chat.id}
-  first_name: ${msg.chat.first_name}
-  last_name: ${msg.chat.last_name}
-  username: ${msg.chat.username}
-  message: ${msg.text}
-  `
-
+  const res = messageHandler.handleTextMessage(msg);
   const chatId = msg.chat.id;
-  const text = msg.text || '';
-  const urls = text.match(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi) || [''];
-  const number = urls[0].match(/\d+(\.\d+)?/g);
-  if(number) {
-    const response = `https://www.themarker.com/misc/themarkersmartphoneapp/${number[0]}`;
-    logMessage += `response: ${response}`;
-    bot.sendMessage(chatId, response);
+  sendLog(res.logMessage);
+  if(res.responseMessage){
+    bot.sendMessage(chatId, res.responseMessage);
   }
-  sendLog(logMessage)
 });
 
 const app = express();
