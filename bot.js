@@ -1,5 +1,4 @@
 const TelegramBot = require('node-telegram-bot-api');
-// const axios = require('axios');
 const express = require('express')
 const bodyParser = require('body-parser');
 
@@ -28,10 +27,10 @@ bot.on('text', (msg) => {
 
   const chatId = msg.chat.id;
   const text = msg.text || '';
-  const urls = text.match(/\bhttps?:\/\/\S+/gi) || [''];
+  const urls = text.match(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi) || [''];
   const number = urls[0].match(/\d+(\.\d+)?/g);
   if(number) {
-    const response = `https://www.themarker.com/misc/themarkersmartphoneapp/${number}`;
+    const response = `https://www.themarker.com/misc/themarkersmartphoneapp/${number[0]}`;
     logMessage += `response: ${response}`;
     bot.sendMessage(chatId, response);
   }
