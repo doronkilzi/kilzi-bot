@@ -8,7 +8,9 @@
     "test:dev": "jest --watch",
     "start": "node bot.js",
     "herokuLogin": "heroku login",
-    "herokuDeploy": "heroku git:remote -a kilzi-bot && git add . && git commit -am \"Deployed to Heroku!!\" && git push heroku master"
+    "herokuDeploy": "heroku git:remote -a kilzi-bot && git add . && git commit -am \"Deployed to Heroku!!\" && git push heroku master",
+    "lint": "npx eslint '*.{js,jsx,json}' --max-warnings=0",
+    "lint-fix": "npm run lint -- --fix"
   },
   "author": "Doron Kilzi",
   "license": "ISC",
@@ -19,6 +21,9 @@
     "node-telegram-bot-api": "^0.53.0"
   },
   "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4",
     "jest": "^27.0.6"
   }
 }

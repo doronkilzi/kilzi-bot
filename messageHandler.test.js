@@ -1,6 +1,6 @@
-
 const messageHandler = require('./messageHandler');
-const handleTextMessage = messageHandler.handleTextMessage;
+
+const { handleTextMessage } = messageHandler;
 describe('handleTextMessage', () => {
   test('when message dont contain any url', () => {
     const res = handleTextMessage(generateMessage('some text'));
@@ -26,7 +26,7 @@ describe('handleTextMessage', () => {
 function generateMessage(text) {
   return {
     text,
-    chat: { 
+    chat: {
       id: 'chatId',
       first_name: 'firstName',
       last_name: 'lastName',
