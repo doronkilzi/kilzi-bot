@@ -14,18 +14,16 @@ if (process.env.NODE_ENV === 'production') {
   bot = new TelegramBot(token, { polling: true });
 }
 
-bot.onText(/\/start/, (msg) => {
-// listens for "/start" and responds with the greeting below.
-  bot.sendMessage(msg.chat.id, 'Please send a message with the article URL inside');
-});
-
-// full type we can found here: TelegramBot.MessageType
 bot.on('text', (msg) => {
   const res = messageHandler.handleTextMessage(msg);
   const chatId = msg.chat.id;
-  sendLog(res.logMessage);
+  if (res.logMessage) {
+    sendLog(res.logMessage);
+  }
   if (res.responseMessage) {
     bot.sendMessage(chatId, res.responseMessage);
+  } else {
+    bot.sendMessage(chatId, 'Sorry, I don\'t understand you.');
   }
 });
 
