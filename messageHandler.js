@@ -2,11 +2,22 @@ const handleTextMessage = (message) => {
   let logMessage = getBaseLogText(message);
   let responseMessage;
 
-  responseMessage = handleArticleMessage(message);
+  switch (true) {
+    case isItStartMessage(message):
+      responseMessage = handleStartMessage();
+      break;
+    case isContainHaaretzOrTheMarkerUrl(message):
+      responseMessage = handleHaaretzOrTheMarkerUrlMessage(message);
+      break;
+    case isContainNytOrEconomisitOrMediumUrl(message):
+      responseMessage = handleNytOrEconomisitOrMediumUrlMessage(message);
+      break;
+    default:
+      break;
+  }
+
   if (responseMessage) {
     logMessage += `response: ${responseMessage}`;
-  } else {
-    responseMessage = handleStartMessage(message);
   }
   return {
     responseMessage,
@@ -16,19 +27,46 @@ const handleTextMessage = (message) => {
 
 exports.handleTextMessage = handleTextMessage;
 
-function handleStartMessage(message) {
-  if (message.text === '/start') {
-    return 'Please send a message with the article URL inside';
-  }
+function isItStartMessage(message) {
+  return message.text === '/start';
 }
 
-function handleArticleMessage(message) {
-  const text = message.text || '';
-  const urls = text.match(/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi) || [''];
-  const number = urls[0].match(/\d+(\.\d+)?/g);
+function handleStartMessage() {
+  return 'Please send a message with the article URL inside';
+}
+
+function isContainHaaretzOrTheMarkerUrl(message) {
+  const urls = extractUrlsFromMessage(message);
+  return urls.some((url) => url.includes('haaretz') || url.includes('themarker'));
+}
+
+function handleHaaretzOrTheMarkerUrlMessage(message) {
+  const urls = extractUrlsFromMessage(message);
+  const url = urls.find((u) => u.includes('haaretz') || u.includes('themarker'));
+  const number = url.match(/\d+(\.\d+)?/g);
   if (number) {
     return `https://www.themarker.com/misc/themarkersmartphoneapp/${number[0]}`;
   }
+}
+
+function isContainNytOrEconomisitOrMediumUrl(message) {
+  const urls = extractUrlsFromMessage(message);
+  return urls.some((url) => url.includes('nytimes')
+    || url.includes('economist')
+    || url.includes('medium.com'));
+}
+
+function handleNytOrEconomisitOrMediumUrlMessage(message) {
+  const urls = extractUrlsFromMessage(message);
+  const url = urls.find((u) => u.includes('nytimes')
+    || u.includes('economist')
+    || u.includes('medium.com'));
+  return `https://12ft.io/proxy?q=${url}`;
+}
+
+function extractUrlsFromMessage(message) {
+  const text = message.text || '';
+  return text.match(/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi) || [''];
 }
 
 function getBaseLogText(message) {

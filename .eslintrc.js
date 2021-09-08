@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     'no-use-before-define': 'off',
     'consistent-return': 'off',
+    'linebreak-style': 'off',
   },
   ignorePatterns: ['package.json', 'package-lock.json', 'node_modules'],
 };
