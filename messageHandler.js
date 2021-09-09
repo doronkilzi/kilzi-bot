@@ -1,4 +1,4 @@
-const twelveFtSites = ['nytimes', 'economist', 'medium.com', 'globes.co.il'];
+const twelveFtSites = ['nytimes', 'economist', 'medium.com', 'globes.co.il', 'theguardian'];
 const handleTextMessage = (message) => {
   let logMessage = getBaseLogText(message);
   let responseMessage;
