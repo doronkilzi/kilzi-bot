@@ -1,3 +1,4 @@
+const twelveFtSites = ['nytimes', 'economist', 'medium.com', 'globes.co.il'];
 const handleTextMessage = (message) => {
   let logMessage = getBaseLogText(message);
   let responseMessage;
@@ -9,8 +10,8 @@ const handleTextMessage = (message) => {
     case isContainHaaretzOrTheMarkerUrl(message):
       responseMessage = handleHaaretzOrTheMarkerUrlMessage(message);
       break;
-    case isContainNytOrEconomisitOrMediumUrl(message):
-      responseMessage = handleNytOrEconomisitOrMediumUrlMessage(message);
+    case isContainTwelveFtSitesUrl(message):
+      responseMessage = handleTwelveFtSitesUrlMessage(message);
       break;
     default:
       break;
@@ -49,18 +50,14 @@ function handleHaaretzOrTheMarkerUrlMessage(message) {
   }
 }
 
-function isContainNytOrEconomisitOrMediumUrl(message) {
+function isContainTwelveFtSitesUrl(message) {
   const urls = extractUrlsFromMessage(message);
-  return urls.some((url) => url.includes('nytimes')
-    || url.includes('economist')
-    || url.includes('medium.com'));
+  return urls.some((url) => twelveFtSites.some((site) => url.includes(site)));
 }
 
-function handleNytOrEconomisitOrMediumUrlMessage(message) {
+function handleTwelveFtSitesUrlMessage(message) {
   const urls = extractUrlsFromMessage(message);
-  const url = urls.find((u) => u.includes('nytimes')
-    || u.includes('economist')
-    || u.includes('medium.com'));
+  const url = urls.find((u) => twelveFtSites.some((site) => u.includes(site)));
   return `https://12ft.io/proxy?q=${url}`;
 }
 
