@@ -6,11 +6,25 @@
   "scripts": {
     "test": "jest",
     "test:dev": "jest --watch",
+    "test:coverage": "jest --coverage",
     "start": "node bot.js",
     "herokuLogin": "heroku login",
     "herokuDeploy": "heroku git:remote -a kilzi-bot && git add . && git commit -am \"Deployed to Heroku!!\" && git push heroku master",
     "lint": "eslint  --max-warnings=0 .",
     "lint-fix": "npm run lint -- --fix"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "messageHandler.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
   },
   "author": "Doron Kilzi",
   "license": "ISC",
