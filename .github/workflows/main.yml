@@ -30,4 +30,4 @@ jobs:
           architecture: ${{ matrix.architecture }}
       - run: npm install
       - run: npm run lint
-      - run: npm test:coverage
+      - run: npm run test:coverage
