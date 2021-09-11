@@ -130,6 +130,8 @@ theguardian`);
       const res = handleTextMessage(generatePrivateMessage('/support'));
       expect(res.isSupportMessage).toBeTruthy();
       expect(res.responseMessage).toEqual(`let me know how can I help you. send me message in this structure:
+/support [TEXT]
+for example:
 /support how can I do X`);
     });
 
