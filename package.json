@@ -11,7 +11,8 @@
     "herokuLogin": "heroku login",
     "herokuDeploy": "heroku git:remote -a kilzi-bot && git add . && git commit -am \"Deployed to Heroku!!\" && git push heroku master",
     "lint": "eslint  --max-warnings=0 .",
-    "lint-fix": "npm run lint -- --fix"
+    "lint-fix": "npm run lint -- --fix",
+    "prepare": "husky install"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -38,6 +39,7 @@
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
+    "husky": "^7.0.0",
     "jest": "^27.0.6"
   }
 }
