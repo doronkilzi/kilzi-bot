@@ -19,6 +19,7 @@ if (NODE_ENV === 'production') {
 bot.on('text', (msg) => {
   const res = messageHandler.handleTextMessage(msg, NODE_ENV);
   const chatId = msg.chat.id;
+  const chatId = msg.chat.id;
   if (res.logMessage) {
     sendLog(res.logMessage);
   }
