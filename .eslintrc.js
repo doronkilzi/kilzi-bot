@@ -15,6 +15,7 @@ module.exports = {
     'no-use-before-define': 'off',
     'consistent-return': 'off',
     'linebreak-style': 'off',
+    'max-len': ['error', { code: 130 }],
   },
   ignorePatterns: ['package.json', 'package-lock.json', 'node_modules'],
 };
