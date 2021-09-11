@@ -28,6 +28,6 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }}
           architecture: ${{ matrix.architecture }}
-      - run: npm install
+      - run: npm ci
       - run: npm run lint
       - run: npm run test:coverage
