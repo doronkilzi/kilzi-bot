@@ -4,18 +4,20 @@ const bodyParser = require('body-parser');
 const messageHandler = require('./messageHandler');
 require('dotenv').config();
 
-const token = process.env.TELEGRAM_TOKEN;
+const {
+  TELEGRAM_TOKEN, NODE_ENV, HEROKU_URL, PORT, CHAT_LOG_ID,
+} = process.env;
 let bot;
 
-if (process.env.NODE_ENV === 'production') {
-  bot = new TelegramBot(token);
-  bot.setWebHook(process.env.HEROKU_URL + bot.token);
+if (NODE_ENV === 'production') {
+  bot = new TelegramBot(TELEGRAM_TOKEN);
+  bot.setWebHook(HEROKU_URL + bot.token);
 } else {
-  bot = new TelegramBot(token, { polling: true });
+  bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 }
 
 bot.on('text', (msg) => {
-  const res = messageHandler.handleTextMessage(msg);
+  const res = messageHandler.handleTextMessage(msg, NODE_ENV);
   const chatId = msg.chat.id;
   if (res.logMessage) {
     sendLog(res.logMessage);
@@ -23,7 +25,7 @@ bot.on('text', (msg) => {
   if (res.responseMessage) {
     bot.sendMessage(chatId, res.responseMessage);
   } else {
-    bot.sendMessage(chatId, 'Sorry, I don\'t understand you.');
+    bot.sendMessage(chatId, "Sorry, I don't understand you.");
   }
 });
 
@@ -31,7 +33,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.listen(process.env.PORT);
+app.listen(PORT);
 
 app.post(`/${bot.token}`, (req, res) => {
   bot.processUpdate(req.body);
@@ -39,5 +41,5 @@ app.post(`/${bot.token}`, (req, res) => {
 });
 
 function sendLog(text) {
-  bot.sendMessage(process.env.CHAT_LOG_ID, text);
+  bot.sendMessage(CHAT_LOG_ID, text);
 }

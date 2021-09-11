@@ -53,7 +53,17 @@ describe('messageHandler', () => {
   describe('handleStartMessage', () => {
     test('when message is /start', () => {
       const res = handleTextMessage(generateMessage('/start'));
-      expect(res.responseMessage).toEqual('Please send a message with the article URL inside');
+      expect(res.responseMessage).toEqual(`Please send a message with the article URL inside.
+
+What Sites are Supported?
+
+haaretz
+themarker
+globes.co.il
+nytimes
+economist
+medium.com
+theguardian`);
     });
   });
 });
@@ -62,6 +72,9 @@ function generateMessage(text) {
   return {
     text,
     chat: {
+      id: 'chatId',
+    },
+    from: {
       id: 'chatId',
       first_name: 'firstName',
       last_name: 'lastName',
