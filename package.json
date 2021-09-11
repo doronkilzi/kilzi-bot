@@ -9,7 +9,7 @@
     "start": "node bot.js",
     "herokuLogin": "heroku login",
     "herokuDeploy": "heroku git:remote -a kilzi-bot && git add . && git commit -am \"Deployed to Heroku!!\" && git push heroku master",
-    "lint": "npx eslint  --max-warnings=0 .",
+    "lint": "eslint  --max-warnings=0 .",
     "lint-fix": "npm run lint -- --fix"
   },
   "author": "Doron Kilzi",
