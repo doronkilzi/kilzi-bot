@@ -5,7 +5,7 @@ const messageHandler = require('./messageHandler');
 require('dotenv').config();
 
 const {
-  TELEGRAM_TOKEN, NODE_ENV, HEROKU_URL, PORT, CHAT_LOG_ID,
+  TELEGRAM_TOKEN, NODE_ENV, HEROKU_URL, PORT, CHAT_LOG_ID, SUPPORT_ID,
 } = process.env;
 let bot;
 
@@ -17,15 +17,26 @@ if (NODE_ENV === 'production') {
 }
 
 bot.on('text', (msg) => {
-  const res = messageHandler.handleTextMessage(msg, NODE_ENV);
+  const {
+    unknownCommand, logMessage, responseMessage, isSupportMessage,
+  } = messageHandler.handleTextMessage(msg, NODE_ENV);
   const chatId = msg.chat.id;
-  if (res.logMessage) {
-    sendLog(res.logMessage);
+
+  if (logMessage) {
+    sendLog(logMessage);
   }
-  if (res.responseMessage) {
-    bot.sendMessage(chatId, res.responseMessage);
-  } else {
+
+  if (isSupportMessage) {
+    sendSupportMessage(logMessage);
+  }
+
+  if (unknownCommand) {
     bot.sendMessage(chatId, "Sorry, I don't understand you.");
+    return;
+  }
+
+  if (responseMessage) {
+    bot.sendMessage(chatId, responseMessage);
   }
 });
 
@@ -42,4 +53,8 @@ app.post(`/${bot.token}`, (req, res) => {
 
 function sendLog(text) {
   bot.sendMessage(CHAT_LOG_ID, text);
+}
+
+function sendSupportMessage(text) {
+  bot.sendMessage(SUPPORT_ID, text);
 }
